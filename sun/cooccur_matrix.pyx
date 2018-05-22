@@ -22,7 +22,7 @@ def get_cooccur(corpus, word2id, int window, dynamic_window=False):
     cdef int sentence_no, s_len, id1, id2, reduced_window, pos, pos2
     cdef list sentence
     logger.info("counting raw co-occurrence counts")
-    cdef int maxval = max(word2id.values())+1
+    cdef int maxval = len(word2id)
     print maxval
     cdef np.ndarray[np.float32_t, ndim=2] cooccur = numpy.zeros((maxval, maxval), dtype=numpy.float32)
     for sentence_no, sentence in enumerate(corpus):
@@ -38,7 +38,6 @@ def get_cooccur(corpus, word2id, int window, dynamic_window=False):
                 id2 = word2id.get(sentence[pos2], -1)
                 if id2 == -1 or pos2 == pos:
                     continue  # skip OOV and the target word itself
-                print(id2)
                 cooccur[id1, id2] += 1.0
     logger.info("%i total count, %i non-zeros in raw co-occurrence matrix" %
         (cooccur.sum(), numpy.count_nonzero(cooccur)))

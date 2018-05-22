@@ -7,6 +7,7 @@ from gensim.corpora import Dictionary
 from gensim.utils import SaveLoad
 import pandas as pd
 from tqdm import tqdm
+from utils import *
 
 import logging
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
@@ -20,11 +21,12 @@ dataset = api.load("text8")
 dct = Dictionary(dataset,prune_at=20000)  # fit dictionary
 dct.filter_extremes(no_below=10,no_above=0.5, keep_n=20000)
 dct.compactify()
-word2id2 = dct.token2id
-word2idf = open('enwiki_wordID2000.csv').read().splitlines()
-word2id = dict(map(lambda s : map(str.strip, s.split(',')), word2idf))
-word2id = dict((k,int(v)) for k,v in word2id.items())
 
+#word2id2 = dct.token2id
+#word2idf = open('enwiki_wordID2000.csv').read().splitlines()
+#word2id = dict(map(lambda s : map(str.strip, s.split(',')), word2idf))
+#word2id = dict((k,int(v)) for k,v in word2id.items())
+word2id, freq = load_freq_vocabid('.')
 # filter sentences to contain only the dictionary words
 corpus = lambda: ([word for word in sentence if word in word2id] for sentence in dataset)
 
@@ -36,4 +38,3 @@ raw = get_cooccur(corpus(), word2id, window=WINDOW, dynamic_window=False)
 
 np.save('W.npy', raw)
 print('done')
-

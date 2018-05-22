@@ -3,7 +3,6 @@ import scipy.sparse as ss
 import math
 import string
 
-
 def load_freq(freq_filename,vocab2id):
     fid = open(freq_filename,'r')
     freq = [None for k in xrange(len(vocab2id))]
@@ -25,21 +24,15 @@ def load_vocab(vocabIdxFilename):
     f.close()
     return vocab2id
     
-
-    
 def load_freq_vocabid(fpath):
-    
     vocab_filename = 'enwiki_wordID2000.csv'
     freq_filename = 'enwiki_freq2000.csv'
         
     vocab2id = load_vocab('%s/%s' % (fpath,vocab_filename))
     freq = load_freq('%s/%s' % (fpath,freq_filename),vocab2id)
     return vocab2id, freq
-    
-
             
-def get_dist(x,y,alpha):
-    
+def get_dist(x,y,alpha): 
     x,y = np.array(x),np.array(y)
     x = np.array(x)
     y = np.array(y)
